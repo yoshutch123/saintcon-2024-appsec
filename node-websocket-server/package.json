@@ -1,0 +1,19 @@
+{
+  "name": "websocket-server",
+  "version": "1.0.0",
+  "description": "This is the websocket server for the IRC chat application. Chat messages are sent to rooms, which are then echoed back to users connected to the room. Messages are stored in mongodb.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node node-websocket-server/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.7.0",
+    "uuid": "^10.0.0",
+    "ws": "^8.17.0"
+  }
+}

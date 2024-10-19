@@ -1,0 +1,29 @@
+.idea/
+venv/
+.venv/
+node_modules/
+target/
+challenge.sln
+__pycache__/
+appsec-submission.zip
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# ASP.NET Core
+wwwroot/
+*.db
+
+
+# Visual Studio
+.vscode/
+.vs/

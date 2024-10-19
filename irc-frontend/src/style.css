@@ -1,0 +1,132 @@
+:root {
+	font-family: "Hack", monospace, system-ui;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color: #222;
+	background-color: #ffffff;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	height: 100%;
+	margin: 0;
+	min-height: 100vh;
+}
+
+.chat-room {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.message-user-holder {
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+}
+
+.login-container,
+.message-area {
+	display: flex;
+	flex-direction: column-reverse;
+	flex-grow: 1;
+	overflow-y: auto;
+	max-height: 100%;
+}
+
+.login-container {
+	margin: 20vh 30vh;
+}
+
+.user-list,
+.room-list {
+	padding: 5em;
+}
+
+.input-area {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	padding: 2em;
+	flex-shrink: 0;
+	justify-content: start;
+}
+
+.input-area textarea {
+	margin: 1em;
+	min-height: auto;
+	resize: none;
+	flex-grow: 3;
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #9966cc;
+	overflow-y: hidden;
+	/* Hide vertical scrollbar */
+}
+
+.input-area button {
+	flex-grow: 1;
+	margin: 1em;
+	padding-left: 2em;
+	padding-right: 2em;
+	border: 1px solid #9966cc;
+}
+
+button {
+	font-family: inherit;
+	border: 1px solid #9966cc;
+	border-radius: 2px;
+	padding: 5px;
+}
+
+.button:hover {
+	cursor:pointer;
+}
+
+.form-element {
+	width: 100%;
+	padding: 0.5em;
+	margin: 0.5em 0;
+}
+
+.room-item {
+	border: 1px solid #5f5766;
+	border-radius: 2px;
+	padding: 5px;
+	margin: 5px;
+}
+
+.room-item:hover {
+	cursor:pointer;
+	border: 1px solid #9966cc;
+}
+
+@media (max-width: 639px) {
+	#app {
+		margin: 2rem;
+	}
+
+	section {
+		margin-top: 5rem;
+		grid-template-columns: 1fr;
+		row-gap: 1rem;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		color: #ccc;
+		background-color: #1a1a1a;
+	}
+}

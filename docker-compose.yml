@@ -1,0 +1,112 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
+    ports:
+      - 127.0.0.1:42108:27017
+    command: mongod --quiet --logpath /dev/null
+    networks:
+      - appnetwork
+
+  postgresql:
+    image: postgres:latest
+    volumes:
+      - ./db/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+    ports:
+      - 8002:5432
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    networks:
+      - appnetwork
+
+  irc-frontend:
+    build: ./irc-frontend
+    ports:
+      - 127.0.0.1:42102:5173
+    logging:
+      driver: "none"
+    depends_on:
+      - ws-backend
+      - java-api
+    networks:
+      - appnetwork
+
+  ws-backend:
+    build: ./node-websocket-server
+    ports:
+      - 127.0.0.1:42103:8801
+    volumes:
+      - ./node-websocket-server:/var/run/node-websocket-server
+    secrets:
+      - app_secret
+    depends_on:
+      - mongodb
+    networks:
+      - appnetwork
+
+  remote-access:
+    build: ./go-remote-access
+    ports:
+      - 127.0.0.1:42104:8023
+    volumes:
+      - ./go-remote-access:/var/run/go-remote-access
+    networks:
+      - appnetwork
+
+  java-api:
+    build: ./JavaApiBackend
+    ports:
+      - 127.0.0.1:42106:8081
+    secrets:
+      - postgres_password
+      - app_secret
+    depends_on:
+      - postgresql
+    networks:
+      - appnetwork
+
+  csharp-fileserver:
+    build: ./CSharpFileServer
+    ports:
+      - 127.0.0.1:42107:8080
+    networks:
+      - appnetwork
+
+  ruby-admin:
+    build: ./ruby-admin
+    environment:
+      - APP_ENV=production # Uses docker compose dns
+    ports:
+      - 127.0.0.1:42109:4568
+    networks:
+      - appnetwork
+    depends_on:
+      - postgresql
+      - java-api
+
+  irc.local:
+    image: nginx:alpine
+    ports:
+      - 127.0.0.1:42101:1337
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - appnetwork
+    depends_on:
+      - irc-frontend
+      - ws-backend
+      - remote-access
+      - java-api
+      - ruby-admin
+
+secrets:
+  app_secret:
+    file: ./app_secret
+  postgres_password:
+    file: ./postgres_password
+
+networks:
+  appnetwork:
+    driver: bridge
+    name: appnetwork
