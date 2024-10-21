@@ -10,7 +10,7 @@ if (-not $?) {
 docker compose up --build -d
 
 # Wait for 5 seconds
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 10
 
 # Run the container
 docker run -v "$(pwd)/test:/usr/src/app" --rm --network "appnetwork" appsecchallengetests "/bin/bash" "/usr/src/app/testapp.sh"

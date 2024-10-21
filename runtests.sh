@@ -6,7 +6,8 @@ docker inspect appsecchallengetests > /dev/null 2>&1 || docker build ./test/ -t 
 
 docker compose up --build -d
 
-sleep 5
+# some containers are sleepy and don't like to wake up
+sleep 10
 
 # Then run the container.
 docker run -v "$(pwd)/test:/usr/src/app" --rm --network "appnetwork" appsecchallengetests "/usr/src/app/testapp.sh"

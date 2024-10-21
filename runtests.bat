@@ -10,8 +10,8 @@ if %ERRORLEVEL% neq 0 (
 REM Start docker compose with build
 docker compose up --build -d
 
-REM Wait for 5 seconds
-timeout /t 5 /nobreak >nul
+REM Wait for 10 seconds
+timeout /t 10 /nobreak >nul
 
 REM Run the container
 docker run -v "%cd%\test:/usr/src/app" --rm --network "appnetwork" appsecchallengetests "/usr/src/app/testapp.sh"
