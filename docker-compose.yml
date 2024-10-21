@@ -12,7 +12,7 @@ services:
     volumes:
       - ./db/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
     ports:
-      - 8002:5432
+      - 42110:5432
     environment:
       - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
     secrets:
