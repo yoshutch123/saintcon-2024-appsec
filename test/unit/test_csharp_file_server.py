@@ -1,8 +1,9 @@
 import requests
 import uuid
+import os
 
 class TestCSharpFileServer:
-    URL = "http://irc.local:1337/files"
+    URL = f"http://{os.environ['irc']}:1337/files"
 
     def test_file_upload_download_image(self):
         file_content = """<svg height="100" width="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>"""

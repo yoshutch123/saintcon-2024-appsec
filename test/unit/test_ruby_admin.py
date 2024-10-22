@@ -1,9 +1,10 @@
 import requests
 import utils
 import psycopg2
+import os
 
 class TestRubyAdmin:
-    URI = "http://irc.local:1337/admin"
+    URI = f"http://{os.environ['irc']}:1337/admin"
 
     def test_admin_login(self):
         response = utils.createUser()
@@ -19,7 +20,7 @@ class TestRubyAdmin:
 
         response = requests.post(f"{self.URI}/login", data={"username":username, "password":"password1"}, allow_redirects=False)
         assert 400 > response.status_code >= 200
-        response = requests.get(f"{self.URI}/dashboard", cookies=response.cookies)
+        response = requests.get(f"{self.URI}/dashboard", cookies=response.cookies.get_dict())
         assert "User Dashboard" in response.text
 
     def test_ban_user(self):
@@ -35,14 +36,14 @@ class TestRubyAdmin:
         conn.commit()
 
         response = requests.post(f"{self.URI}/login", data={"username":admin, "password":"password1"}, allow_redirects=False)
-        admin_cookies = response.cookies
+        admin_cookies = response.cookies.get_dict()
 
         response = utils.createUser()
         username = response.json()["username"]
         user_to_ban = response.json()['userId']
         response = requests.post(f"{self.URI}/ban", json={"userId":user_to_ban}, cookies = admin_cookies)
         assert 300 > response.status_code >= 200
-        response = requests.post("http://irc.local:1337/api/login", json={"username":username, "password":"password1"})
+        response = requests.post(f"http://{os.environ['irc']}:1337/api/login", json={"username":username, "password":"password1"})
         assert response.status_code >= 400
 
 
@@ -59,14 +60,14 @@ class TestRubyAdmin:
         conn.commit()
 
         response = requests.post(f"{self.URI}/login", data={"username":admin, "password":"password1"}, allow_redirects=False)
-        admin_cookies = response.cookies
+        admin_cookies = response.cookies.get_dict()
 
         response = utils.createUser()
         username = response.json()["username"]
         user_to_ban = response.json()['userId']
         response = requests.post(f"{self.URI}/ban", json={"userId":user_to_ban}, cookies = admin_cookies)
         response = requests.post(f"{self.URI}/unban", json={"userId":user_to_ban}, cookies = admin_cookies)
-        response = requests.post("http://irc.local:1337/api/login", json={"username":username, "password":"password1"})
+        response = requests.post(f"http://{os.environ['irc']}:1337/api/login", json={"username":username, "password":"password1"})
         assert 400 > response.status_code >= 200
 
         

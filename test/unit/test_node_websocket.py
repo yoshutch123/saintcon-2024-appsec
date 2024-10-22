@@ -5,6 +5,7 @@ from websocket import WebSocketTimeoutException
 import json
 import datetime
 import time
+import os
 
 def wait_for_message(ws, timeout=5):
     start = time.time()
@@ -17,20 +18,20 @@ def wait_for_message(ws, timeout=5):
     raise TimeoutError("Message not received in time")
 
 class TestWebsocket:
-    JAVA_API = "http://irc.local:1337/api"
-    WEBSOCKET = "ws://irc.local:1337/ws"
+    JAVA_API = f"http://{os.environ['irc']}:1337/api"
+    WEBSOCKET = f"ws://{os.environ['irc']}:1337/ws"
 
     def test_connect_to_websocket(self):
         # user 1
         response = utils.createUser()
-        cookies1 = response.cookies
+        cookies1 = response.cookies.get_dict()
         user1 = response.json()
         response = requests.post(f"{self.JAVA_API}/rooms", json={"name":"roomba"}, cookies=cookies1)
         roomId = response.json().get("roomId")
 
         # user 2
         response = utils.createUser()
-        cookies2 = response.cookies
+        cookies2 = response.cookies.get_dict()
         user2 = response.json()
         response = requests.post(f"{self.JAVA_API}/rooms/{roomId}/users", cookies=cookies1, json={"username":user2.get("username"), "roomId":roomId})
         token1 = requests.get(f"{self.JAVA_API}/connect/{roomId}", cookies=cookies1).text

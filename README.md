@@ -69,6 +69,8 @@ Windows:
 
 Note that the local tests my be flaky on Windows, and we didn't test at all on Mac. Everything should still *work* fine with writing code and running the web application though.
 
+Note that the final commit on the repo changes tests to use environment-variable-defined IP addresses instead of hostnames to resolve an issue with Docker's DNS stack on Windows and Mac. This makes the unit tests slightly different than what is on the test harness, but signficantly speeds up local testing on those operating systems.
+
 ## Submitting
 Run `python3 make_package.py` and submit the resulting `appsec-submission.zip` to https://appsec.saintcon.community. You'll need to create an account first.
 
