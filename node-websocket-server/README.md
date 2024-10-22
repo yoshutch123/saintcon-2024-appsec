@@ -8,7 +8,6 @@ There are 4 severe vulnerabilities:
 - JS_EASY
 - JS_MODERATE_A
 - JS_MODERATE_B
-- JS_MODERATE_C
 - JS_HARD
 
 ## In-scope files
