@@ -31,7 +31,8 @@ func authUser(c net.Conn) string {
 		c.Write([]byte("Password: "))
 		password, _ := bufio.NewReader(c).ReadString('\n')
 		password = strings.TrimSpace(password)
-		if userMap[username] == password {
+		val, ok := userMap[username]
+		if ok && val == password {
 			c.Write([]byte("successful auth. Can run commands now.\n" + username + "$ "))
 			return username
 		}
