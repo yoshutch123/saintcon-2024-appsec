@@ -19,6 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Set;
 
+// There are maybe other security headers we want to return?
+// Rate limiting?
+
+// Gotta be something here to lock down CORS
 @CrossOrigin(originPatterns="*", allowedHeaders="*", allowCredentials="true")
 @RestController
 public class ApiController {
