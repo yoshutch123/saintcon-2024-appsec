@@ -15,6 +15,7 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private final String secret;
+    private static final String ISSUER = "irc.local";
 
     public JwtUtil() throws IOException {
         this.secret = readSecretFromFile();
@@ -46,7 +47,10 @@ public class JwtUtil {
     }
 
     private DecodedJWT decodeToken(String token) {
-        return JWT.require(Algorithm.HMAC256(secret.getBytes())).build().verify(token);
+        return JWT.require(Algorithm.HMAC256(secret.getBytes()))
+            .withIssuer(ISSUER)
+            .build()
+            .verify(token);
     }
 
     private Boolean isTokenExpired(String token) {
@@ -56,6 +60,7 @@ public class JwtUtil {
     private String createToken(String subject, Long expiryInMinutes) {
         return JWT.create()
                 .withSubject(subject)
+                .withIssuer(ISSUER)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + (expiryInMinutes * 60 * 1000)))
                 .sign(Algorithm.HMAC256(secret.getBytes()));
