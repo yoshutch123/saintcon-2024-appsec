@@ -16,6 +16,7 @@ public class JwtUtil {
 
     private final String secret;
     private static final String ISSUER = "irc.local";
+    private static final String ROOM_CLAIM = "room";
 
     public JwtUtil() throws IOException {
         this.secret = readSecretFromFile();
@@ -66,4 +67,13 @@ public class JwtUtil {
                 .sign(Algorithm.HMAC256(secret.getBytes()));
     }
 
+
+    public String generateRoomToken(Long roomId, long expiryInMinutes) {
+        return JWT.create()
+                .withClaim(ROOM_CLAIM, roomId.toString())
+                .withIssuer(ISSUER)
+                .withIssuedAt(new Date(System.currentTimeMillis()))
+                .withExpiresAt(new Date(System.currentTimeMillis() + (expiryInMinutes * 60 * 1000)))
+                .sign(Algorithm.HMAC256(secret.getBytes()));
+    }
 }

@@ -1,6 +1,7 @@
 package community.saintcon.appsec.utils;
 
 import community.saintcon.appsec.model.User;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,15 +32,19 @@ public class AuthUtil {
         if (authToken == null) {
             return null;
         }
-        Long userId = jwtUtil.getValidatedClaimId(authToken.getValue());
-        if (userId == null) {
+        try {
+            Long userId = jwtUtil.getValidatedClaimId(authToken.getValue());
+            if (userId == null) {
+                return null;
+            }
+            User user = dbService.getUser(userId);
+            if (user.banned()) {
+                return null;
+            }
+            return user;
+        } catch (JWTVerificationException e) {
             return null;
         }
-        User user = dbService.getUser(userId);
-        if (user.banned()) {
-            return null;
-        }
-        return user;
     }
 
     public void setAuthenticatedUser(HttpServletResponse response, long userId) {

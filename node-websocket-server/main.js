@@ -74,7 +74,7 @@ function auth(req) {
         let data = jwt.verify(roomToken, secretKey, options = {
             algorithms: ['HS256'],
         });
-        results["room"] = data.sub;
+        results["room"] = data.room;
 
         data = jwt.verify(authToken, secretKey, options = {
             algorithms: ['HS256'],
