@@ -38,7 +38,7 @@ async function insert(doc) {
 }
 
 async function getLastMessages(roomId, count) {
-    if (!count) {
+    if (!count || isNaN(count)) {
         count = 5;
     }
     let client = null;
