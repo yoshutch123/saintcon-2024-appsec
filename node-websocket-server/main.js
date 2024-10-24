@@ -117,7 +117,7 @@ wss.on('connection', (client, req) => {
     client.on('message', (data) => {
         let msg = {};
         try {
-            msg = eval(`(${data.toString()})`);
+            msg = JSON.parse(data.toString());
         } catch (error) {
             if (error instanceof SyntaxError) {
                 console.error("Invalid JSON received:", data.toString());

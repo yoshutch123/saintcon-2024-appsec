@@ -18,6 +18,10 @@ app.MapGet("/", async (HttpContext context) =>
         await context.Response.WriteAsync("File path is required.");
         return;
     }
+    // Sanitize the filePath to prevent path traversal attacks
+    // not working? also want to stop downloading application files
+    filePath = filePath.Replace("../", "");
+    filePath = filePath.Replace("/", "");
     filePath = WebUtility.UrlDecode(filePath);
     try
     {

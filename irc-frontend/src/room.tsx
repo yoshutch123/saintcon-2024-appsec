@@ -42,7 +42,7 @@ function RoomView() {
       setMessages([]);
       const host = new URL(window.location.href).host;
       const x = new WebSocket(
-        `ws://${host}/ws?user=${user.userId}&token=${token}`
+        `ws://${host}/ws?user=${user.userId}&token=${token}&directConnection=true`
       );
       x.onmessage = (event) => {
         const messageData = JSON.parse(event.data);
